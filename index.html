@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffd8e8">
+<title>Sakshi's Panda Wonderland 🐼</title>
+<style>
+:root{--ink:#493344;--pink:#ff91bd;--purple:#c9b4ff;--blue:#a5e8f4;--yellow:#ffe47a;--mint:#bcefdc;--paper:#fffaf3}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;color:var(--ink);background:#fff0f5;overflow:hidden}button,input{font:inherit}button{cursor:pointer}
+.screen{display:none;height:100svh;min-height:100svh;overflow:auto;padding:24px 14px 45px;text-align:center;position:relative}.screen.active{display:flex;flex-direction:column;align-items:center;animation:enter .35s ease}
+@keyframes enter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}@keyframes float{to{transform:translateY(-9px) rotate(4deg)}}@keyframes spin{to{transform:rotate(360deg)}}
+.screen:before,.screen:after{content:"";position:fixed;width:145px;height:145px;border:4px dashed #e98ab955;border-radius:50%;pointer-events:none;z-index:0;animation:spin 28s linear infinite}.screen:before{top:-90px;left:-80px}.screen:after{bottom:-90px;right:-80px;animation-direction:reverse}
+.content{width:100%;max-width:920px;margin:auto;position:relative;z-index:1}.home{background:linear-gradient(145deg,#fff1b9,#ffd1e2 55%,#dcd3ff)}.cake-screen{background:linear-gradient(145deg,#ffefb4,#ffd0e3,#ded4ff)}.vault-screen{background:linear-gradient(145deg,#302a43,#624761);color:white}.timeline-screen{background:linear-gradient(145deg,#fff0c9,#e2f8ff)}.gallery-screen{background:linear-gradient(145deg,#ffe5ef,#e6dcff)}.letter-screen{background:linear-gradient(145deg,#ffe5ef,#fff4d6)}.final-screen{background:linear-gradient(145deg,#ffe0ed,#fff0b7,#d9f5ff)}
+h1{font-size:clamp(38px,9vw,72px);line-height:1.05;color:#e65091;text-shadow:3px 4px white,5px 6px #ffe16f;margin:17px 0}h1 span{display:block;color:#514052}h2{font-size:clamp(25px,6vw,40px);margin:14px 0}h3{margin:9px 0}p{line-height:1.75}.desc{font-size:clamp(16px,4vw,19px);max-width:700px;margin:12px auto 22px}.panda{font-size:72px;filter:drop-shadow(3px 4px white);animation:float 2s ease-in-out infinite alternate}.label,.sticker{display:inline-block;background:var(--yellow);border:3px solid var(--ink);border-radius:30px;padding:9px 15px;font-weight:1000;font-size:12px;letter-spacing:1px;box-shadow:4px 5px var(--ink);transform:rotate(-2deg)}
+.btn{border:3px solid var(--ink);border-radius:16px;padding:13px 19px;margin:7px 5px;background:var(--pink);font-weight:1000;color:var(--ink);box-shadow:5px 6px var(--ink);transition:.15s}.btn:active{transform:translate(3px,3px);box-shadow:2px 3px var(--ink)}.yellow{background:var(--yellow)}.purple{background:var(--purple)}.blue{background:var(--blue)}.mint{background:var(--mint)}
+.paper{position:relative;max-width:760px;margin:22px auto;padding:23px;background:var(--paper);border:4px solid var(--ink);border-radius:24px;box-shadow:8px 9px #67495f}.paper:after{content:"";position:absolute;inset:9px;border:2px dashed #e99abb;border-radius:16px;pointer-events:none}.paper>*{position:relative;z-index:1}.highlight{background:#e2f6ff;border:3px dashed #83bfd0;border-radius:18px;padding:15px;margin:17px auto;font-weight:bold}
+.photo{max-width:550px;margin:20px auto;background:white;padding:10px 10px 16px;border:4px solid var(--ink);border-radius:16px;box-shadow:7px 8px #67495f;transform:rotate(-1deg)}.photo img{display:block;width:100%;max-height:500px;min-height:130px;object-fit:cover;border-radius:9px}.caption{font-weight:bold;padding-top:10px}.nav{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin-top:18px}
+.lock{max-width:440px;margin:24px auto;padding:23px;background:#fff1c8;color:var(--ink);border:4px solid var(--yellow);border-radius:22px;box-shadow:7px 7px #171421}input{width:100%;padding:14px;border:3px solid var(--ink);border-radius:12px;text-align:center;margin:10px 0}.error{color:#c62828;min-height:22px;font-weight:bold}
+.timeline{max-width:730px;margin:24px auto;text-align:left;border-left:5px dashed #e56b9d;padding-left:22px}.memory{position:relative;background:white;border:3px solid var(--ink);border-radius:19px;padding:18px;margin:22px 0;box-shadow:6px 7px var(--yellow);cursor:pointer;transition:.2s}.memory:before{content:"🐾";position:absolute;left:-43px;top:12px;font-size:23px}.memory.open{background:#fff4fa;box-shadow:6px 7px #e99abb}.memory .reveal{display:none;border-top:2px dashed #e77cac;margin-top:13px;padding-top:12px;line-height:1.75;animation:enter .3s}.memory.open .reveal{display:block}.hint{font-size:12px;font-weight:bold;color:#bd5689;display:block;margin-top:9px}.reveal img{width:100%;max-height:270px;object-fit:cover;border-radius:12px}.image-note{font-size:13px;font-weight:bold;color:#86536e;margin:7px auto 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:22px auto;text-align:left}.tile{background:#fff1bd;border:3px solid var(--ink);border-radius:18px;padding:14px;box-shadow:5px 6px var(--ink)}.tile:nth-child(3n+2){background:#e9e0ff}.tile:nth-child(3n){background:#e1f8fb}.tile img,.tile video{width:100%;max-height:260px;object-fit:cover;border:3px solid white;border-radius:12px}.tile video{height:auto}
+.letter{text-align:left;line-height:1.85}.letter p{font-size:clamp(16px,4vw,19px)}.signature{text-align:right;font-weight:bold}
+
+/* SINGLE-TIER BIRTHDAY CAKE */
+.cake{
+  width:280px;
+  max-width:90%;
+  height:190px;
+  margin:35px auto 20px;
+  position:relative;
+}
+.candles{
+  display:flex;
+  justify-content:space-evenly;
+  align-items:flex-end;
+  width:75%;
+  height:75px;
+  margin:0 auto -2px;
+  position:relative;
+  z-index:5;
+}
+.candle{
+  width:20px;
+  height:55px;
+  background:repeating-linear-gradient(45deg,#fff 0 7px,#58b9ed 7px 14px);
+  border:3px solid var(--ink);
+  border-radius:5px;
+  position:relative;
+  padding:0;
+}
+.candle:before{
+  content:"";
+  position:absolute;
+  top:-22px;
+  left:3px;
+  width:10px;
+  height:17px;
+  border-radius:50% 50% 45% 45%;
+  background:#ffb52c;
+  box-shadow:0 0 12px #ffb52c;
+  animation:flame .6s infinite alternate;
+}
+.candle.out:before{display:none}
+@keyframes flame{to{transform:scale(.8) rotate(8deg)}}
+.cake-body{
+  width:100%;
+  height:105px;
+  position:relative;
+  border:4px solid var(--ink);
+  border-radius:12px 12px 22px 22px;
+  background:linear-gradient(180deg,#ed4949 0%,#d92735 75%,#b91f32 100%);
+  box-shadow:inset 0 -9px 0 #9e1d2c35,0 8px 0 #49334430;
+  display:grid;
+  place-items:center;
+  z-index:2;
+}
+.cake-body:before{
+  content:"";
+  position:absolute;
+  top:-13px;
+  left:-4px;
+  right:-4px;
+  height:27px;
+  background:#fff8f4;
+  border:4px solid var(--ink);
+  border-radius:50%;
+  box-shadow:0 4px 0 #f6dce7;
+}
+.cake-body:after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  top:39px;
+  height:9px;
+  background:#ffe47a;
+  border-top:2px solid #493344;
+  border-bottom:2px solid #493344;
+}
+.cake-name{
+  position:relative;
+  z-index:3;
+  margin-top:22px;
+  color:white;
+  font-size:23px;
+  font-weight:1000;
+  text-shadow:2px 2px #8f2437;
+}
+.plate{
+  width:112%;
+  height:23px;
+  margin:-2px auto 0;
+  border:4px solid var(--ink);
+  border-radius:50%;
+  background:linear-gradient(#fff,#e8e3ee);
+  box-shadow:0 6px 0 #49334425;
+  position:relative;
+  z-index:1;
+}
+.wish{display:none;background:white;border:3px dashed #e77cac;border-radius:20px;padding:18px;margin:18px auto}.wish.show{display:block}
+
+/* BEAUTIFUL FALLING HEARTS, PETALS & SPARKLES */
+.shower-bit{position:fixed;top:-45px;z-index:9999;pointer-events:none;user-select:none;line-height:1;will-change:transform,opacity;animation:shower-fall var(--duration,4s) linear var(--delay,0s) forwards}
+@keyframes shower-fall{0%{transform:translate3d(0,-5vh,0) rotate(0deg) scale(.75);opacity:0}10%{opacity:1}50%{transform:translate3d(var(--drift,35px),50vh,0) rotate(220deg) scale(1.08);opacity:1}100%{transform:translate3d(var(--drift-end,-25px),112vh,0) rotate(520deg) scale(.8);opacity:0}}
+@media(prefers-reduced-motion:reduce){.shower-bit{animation-duration:2s}}
+.companion{position:fixed;right:12px;bottom:12px;z-index:50;border:3px solid var(--ink);border-radius:50%;width:58px;height:58px;background:#fff;box-shadow:3px 4px var(--ink);font-size:30px}.bubble{position:fixed;right:12px;bottom:80px;z-index:50;max-width:230px;background:white;border:3px solid var(--ink);border-radius:17px;padding:12px;box-shadow:4px 5px #67495f;display:none;font-size:14px}.bubble.show{display:block;animation:enter .2s}
+.quiz-option{display:block;width:100%;text-align:left;background:white;border:2px solid var(--ink);border-radius:13px;padding:12px;margin:8px 0;font-weight:bold}.quiz-option.selected{background:#ffe2ee;border-color:#d94c8b}.quiz-feedback{font-weight:bold;min-height:28px}
+.jar{font-size:105px;display:block;margin:15px auto;cursor:pointer;filter:drop-shadow(4px 5px #fff);animation:float 2s infinite alternate}.note{background:#fffaf0;border:3px dashed #e77cac;border-radius:18px;padding:18px;margin:18px auto;max-width:600px;min-height:100px;display:grid;place-items:center;font-size:18px;font-weight:bold}
+.gift{font-size:115px;cursor:pointer;display:block;margin:18px auto;animation:float 1.6s infinite alternate}.gift.open{animation:spin 2s ease}.gift-message{display:none}.gift-message.show{display:block;animation:enter .5s}
+.shower{display:none;max-width:650px;margin:25px auto;padding:23px;border:4px solid var(--ink);border-radius:28px;background:linear-gradient(145deg,#fff0b8,#ffd4e8,#e5d9ff);box-shadow:9px 10px #67495f}.shower.show{display:block;animation:enter .6s}.shower-panda{font-size:85px;animation:float 1s infinite alternate}.shower h2{color:#e64f91;text-shadow:2px 3px white}.shower-note{background:white;border:3px dashed #e77cac;border-radius:20px;padding:18px;line-height:1.8}
+footer{padding:15px;color:#80687a;font-size:13px}
+@media(max-width:430px){.screen{padding:20px 11px 38px}.paper{padding:19px}.tile{padding:11px}}
+</style>
+</head>
+<body>
+
+<section class="screen home active" id="home"><main class="content">
+<div class="panda">🐼</div><div class="sticker">WELCOME TO YOUR PANDA WONDERLAND</div>
+<h1>Happy Birthday,<span>Sakshi! ♡</span></h1>
+<div class="photo"><img src="mirror.jpg" alt="Sakshi"><div class="caption">The birthday girl ✨</div></div>
+<div class="paper"><h2>Dear Sakshi, 💗</h2>
+<p>Some people become more than just friends. They become part of our everyday stories, our happiest memories and our most random conversations.</p>
+<p>You're one of my closest friends, someone who has a very special place in my college memories and in my life.</p>
+<div class="highlight">To my partner in college chaos, my best friend, my secret keeper and one of my favourite people. I'm genuinely lucky to have you! 💛</div>
+<p>Keep smiling, keep being yourself, and never lose that beautiful madness of yours. 😂</p></div>
+<button class="btn" data-go="cake">Start your birthday adventure → 🎂</button>
+</main></section>
+
+<section class="screen cake-screen" id="cake"><main class="content">
+<div class="label">THE PANDA BIRTHDAY CORNER</div><h1>Sakshi! 🎂</h1><p class="desc">Tap every candle to blow it out and make a wish.</p>
+<div class="cake">
+  <div class="candles">
+    <button class="candle" aria-label="Candle"></button>
+    <button class="candle" aria-label="Candle"></button>
+    <button class="candle" aria-label="Candle"></button>
+  </div>
+  <div class="cake-body">
+    <div class="cake-name">Sakshi ♡</div>
+  </div>
+  <div class="plate"></div>
+</div>
+<p id="candle-count">3 candles are glowing!</p><button class="btn yellow" id="relight">Relight candles 🕯️</button>
+<div class="wish" id="wish"><h2>Make a wish! 🌟</h2><p>May your days be full of laughter, good people, success and beautiful little moments. Happy Birthday! 💗</p><button class="btn purple" data-go="vault">Enter your Secret Vault 🔐</button></div>
+<button class="btn blue" data-go="home">← Home</button>
+</main></section>
+
+<section class="screen vault-screen" id="vault"><main class="content">
+<div class="panda">🐼🔐</div><div class="label">TOP SECRET · JUST FOR SAKSHI</div><h2>Your Memory Vault</h2>
+<p class="desc">Your college memories, photos, videos and little surprises are waiting inside.</p>
+<div class="lock"><div style="font-size:55px">🔒🎀</div><h3>Unlock your memories</h3><form id="password-form"><input id="password" type="password" placeholder="Enter your password" required><button class="btn" type="submit">Unlock the vault 💗</button><div class="error" id="password-error"></div></form></div>
+<button class="btn blue" data-go="cake">← Cake</button>
+</main></section>
+
+<section class="screen timeline-screen" id="vaultHome"><main class="content">
+<div class="panda">🐼🌸</div><div class="label">WELCOME INSIDE, RAFIQI</div><h1>Our Memory Book</h1>
+<div class="photo"><img src="college-group.jpg" alt="College group"><div class="caption">The people, the chaos, the memories. 💞</div></div>
+<div class="paper"><h2>Choose a memory adventure</h2><p>Take your time. Every little page has something waiting for you.</p></div>
+<div class="nav"><button class="btn yellow" data-go="timeline">Our Storybook 📖</button><button class="btn purple" data-go="gallery">Photo & Video Wall 📸</button><button class="btn pink" data-go="quiz">Friendship Quiz 🎯</button><button class="btn mint" data-go="jar">Memory Jar 🫙</button><button class="btn blue" data-go="letter">A Letter 💌</button><button class="btn" data-go="gift">Mystery Gift 🎁</button></div>
+</main></section>
+
+<section class="screen timeline-screen" id="timeline"><main class="content">
+<div class="panda">🐼📖</div><div class="label">LITTLE MOMENTS, BIG MEMORIES</div><h1>Our Storybook 💗</h1>
+<p class="desc">Tap each chapter. Some memories are photographs; some are moments we never want to forget.</p>
+<div class="paper"><h2>Before you begin... 🌷</h2><p>Maybe some of these moments were ordinary days for you. But for me, they became memories worth keeping. We never planned to create them. They just happened — between lectures, practicals, jokes and random conversations.</p><b>So, let's go back for a moment...</b></div>
+<div class="timeline">
+
+<article class="memory"><h3>🌱 01 — The beginning</h3><p>When our college story started...</p><span class="hint">Tap to open ↓</span><div class="reveal"><p>When college began, everything was new: faces, classrooms, people and possibilities. Initially, it was me and Sneha who had started becoming friends. Then, a few days into college, you became part of our little circle.</p><p>I don't think any of us knew that those ordinary introductions would turn into so many stories, jokes, secrets and memories.</p><b>Sometimes the best friendships begin without a plan.</b></div></article>
+
+<article class="memory"><h3>📱 02 — From Snapchat to WhatsApp</h3><p>A little compliment, a new connection.</p><span class="hint">Tap to open ↓</span><div class="reveal">
+<p>Our conversations started on Snapchat around the beginning of October. Somewhere in those early chats, I told you that I liked your eyes and your voice. Just a small compliment, but it became one of those little details from the beginning that I still remember.</p>
+<p>Then, around my birthday in October, you messaged me on WhatsApp, and our conversations continued there too. From Snapchat chats to WhatsApp messages — one more little chapter in how our friendship grew.</p>
+<img src="eyes.jpg" alt="Sakshi's eyes">
+<div class="image-note">One of the little things I told you I liked. 💗</div>
+<b>Sometimes a simple conversation becomes the start of a lovely memory.</b>
+</div></article>
+
+<article class="memory"><h3>👭 03 — Our little college gang</h3><p>Different personalities, one collection of memories.</p><span class="hint">Tap to open ↓</span><div class="reveal"><p>There was Sneha, Altaf, you and me — each with our own personality and our own way of creating chaos. It wasn't about doing something extraordinary every day. Sometimes just being together was enough.</p><p>I wish we could pause some of those ordinary college days and look at them properly. We probably didn't realise how memorable they would become.</p><b>Our little group had its own kind of magic.</b></div></article>
+
+<article class="memory"><h3>🎨 04 — 8 October 2023</h3><p>The model-making competition.</p><span class="hint">Tap to open ↓</span><div class="reveal"><p>I remember the model-making competition. I was there with Sneha and Altaf, and you helped with the drawing and setting everything up.</p><p>There was work to do, things to arrange and ideas to put together. What makes me remember that day isn't just the competition. It's that we were making memories without even knowing it.</p><b>A little teamwork, a little chaos, and a memory that stayed.</b></div></article>
+
+<article class="memory"><h3>🩹 05 — The HAP practical</h3><p>"Don't worry, just look at me."</p><span class="hint">Tap to open ↓</span><div class="reveal"><p>You were scared of the finger-prick. I remember telling you, <b>"Don't worry, just look at me. Let me do it for you."</b></p><p>I took your hand, and you held my forearm tightly. It was such a small practical moment. For everyone else, it might have been just another activity. But I remember the way you trusted me enough to feel a little less nervous.</p><b>One tiny practical. One memory I never forgot.</b></div></article>
+
+<article class="memory"><h3>🤝 06 — The first-semester viva</h3><p>A nervous moment, a little reassurance.</p><span class="hint">Tap to open ↓</span><div class="reveal"><p>January. First-semester practicals and viva. I remember the common room, the nervous atmosphere and you holding my hand. We stayed that way for more than half an hour.</p><p>There wasn't any big conversation or dramatic scene. Just two friends, one nervous moment and a little comfort in being there for each other.</p><b>Sometimes a little hand to hold makes a difficult moment easier.</b></div></article>
+
+<article class="memory"><h3>🫶 07 — A moment captured</h3><p>Some pictures bring back more than memories.</p><span class="hint">Tap to open ↓</span><div class="reveal"><img src="hand-holding.jpg" alt="A captured moment"><p>This photograph has its own little place in my collection. It's one of those separate moments when a simple picture captured something I still remember.</p><b>One photograph. So many things to remember.</b></div></article>
+
+<article class="memory"><h3>🍟 08 — Canteen, lunch and off-class moments</h3><p>The ordinary days that never felt ordinary.</p><span class="hint">Tap to open ↓</span><div class="reveal"><p>The canteen visits, lunch breaks, sitting together, off-class moments and random conversations. Sometimes we had absolutely nothing important to do, but somehow there was always something to talk about.</p><p>Maybe that's what makes these memories special. They weren't extraordinary while they were happening. They became special when I started looking back.</p><b>Ordinary days. Unforgettable company.</b></div></article>
+
+<article class="memory"><h3>🎶 09 — Random songs and endless conversations</h3><p>One topic leading to another, as always.</p><span class="hint">Tap to open ↓</span><div class="reveal"><p>Our conversations could go in literally any direction. One minute we would be talking about something serious, and the next minute the topic would be completely random.</p><p>And then there were the songs. Random songs, references and conversations that somehow continued even when there was no particular reason to keep talking.</p><b>We didn't need interesting topics. We made random topics interesting.</b></div></article>
+
+<article class="memory"><h3>🔐 10 — The things we shared</h3><p>Little secrets, trust and understanding.</p><span class="hint">Tap to open ↓</span><div class="reveal"><p>There were conversations that weren't meant for everyone. Little things we shared, thoughts we expressed, and moments when we could talk freely.</p><p>Trust grows through small things: listening, understanding, keeping someone's words safe and being there without making everything complicated.</p><b>Some memories are not photographs. They are things only two friends understand.</b></div></article>
+
+<article class="memory"><h3>😂 11 — Our fights, teasing and making up</h3><p>Because we were never serious for too long.</p><span class="hint">Tap to open ↓</span><div class="reveal"><p>We weren't always sweet and understanding. There were disagreements, teasing, silly arguments and moments when one of us got annoyed with the other.</p><p>But then things would become normal again, and we'd go back to talking, laughing and being ourselves. Not every moment has to be perfect. What matters is the care underneath all the madness.</p><b>A little fighting, a little teasing, and a lot of memories.</b></div></article>
+
+<article class="memory"><h3>🌙 12 — Your wonderfully weird stories</h3><p>Some conversations were simply unbelievable!</p><span class="hint">Tap to open ↓</span><div class="reveal"><p>How can I forget your dream stories? Sometimes you'd tell me something so unexpected that I genuinely wouldn't know what to say first.</p><p>The stories, explanations, random details and my reactions — those conversations had their own entertainment value.</p><b>Never stop telling your weird stories. They're part of your charm!</b></div></article>
+
+<article class="memory"><h3>💗 13 — If I could revisit one thing...</h3><p>I'd choose the ordinary days.</p><span class="hint">Tap to open ↓</span><div class="reveal"><p>Would it be the model-making competition? The HAP practical? The nervous first-semester viva? The canteen conversations? Or those random moments when we laughed at absolutely nothing?</p><p>Maybe I wouldn't choose just one. I'd choose a normal college day — a day when nobody knew it would become a memory. A day when we were simply being ourselves.</p><b>If I could revisit those days, I'd happily live those little moments all over again.</b></div></article>
+
+</div>
+<div class="paper"><div class="panda">🐼💗</div><h2>One last thing, Sakshi...</h2><p>I don't know how many of these moments you remember. Maybe some will make you smile, some will make you laugh, and maybe some will make you say, "Do you seriously remember that?" 😂</p><p>But I do remember. Not because every moment was extraordinary, but because you were part of them.</p><h2 style="color:#e65091">Some people become memories. Some become a part of the story. 💗</h2></div>
+<div class="nav"><button class="btn purple" data-go="gallery">Photos →</button><button class="btn blue" data-go="vaultHome">← Memory Vault</button></div>
+</main></section>
+
+<section class="screen gallery-screen" id="gallery"><main class="content">
+<div class="label">THE PHOTO & VIDEO WALL</div><h1>Little Snapshots 📸</h1><p class="desc">Tap a photograph to see it bigger. Play the videos for the moving memories.</p>
+<div class="grid">
+<div class="tile"><img class="zoomable" src="childhood.jpg" alt="Childhood memory"><h3>Little throwback 🌼</h3></div>
+<div class="tile"><img class="zoomable" src="traditional-pink.jpg" alt="Traditional pink outfit"><h3>Pretty in pink 🌸</h3></div>
+<div class="tile"><img class="zoomable" src="classroom-selfie.jpg" alt="Classroom selfie"><h3>Classroom moments 📚</h3></div>
+<div class="tile"><img class="zoomable" src="three-girls.jpg" alt="Three friends"><h3>The girls 💗</h3></div>
+<div class="tile"><img class="zoomable" src="saree-friends.jpg" alt="Two friends in traditional outfits"><h3>A little traditional-day memory 💗</h3></div>
+<div class="tile"><img class="zoomable" src="funny-collage.jpg" alt="Funny collage"><h3>Certified chaos 😂</h3></div>
+<div class="tile"><img class="zoomable" src="eyes.jpg" alt="Sakshi's eyes"><h3>Those eyes 💗</h3></div>
+<div class="tile"><video controls playsinline preload="metadata"><source src="classroom-fun.mp4" type="video/mp4"></video><h3>Classroom fun 🎬</h3></div>
+<div class="tile"><video controls playsinline preload="metadata"><source src="funny-moment.mp4" type="video/mp4"></video><h3>One more laugh 🤣</h3></div>
+</div>
+<p style="font-size:13px">Keep all media files in the same folder as index.html.</p><button class="btn blue" data-go="vaultHome">← Memory Vault</button>
+</main></section>
+
+<div id="lightbox" style="display:none;position:fixed;inset:0;background:#211827ee;z-index:120;align-items:center;justify-content:center;padding:18px" role="dialog" aria-label="Enlarged photo">
+<button id="close-lightbox" class="btn" style="position:absolute;top:15px;right:15px">✕ Close</button>
+<img id="lightbox-img" alt="Enlarged memory" style="max-width:95%;max-height:82vh;border:5px solid white;border-radius:15px;object-fit:contain">
+</div>
+
+<section class="screen gallery-screen" id="quiz"><main class="content">
+<div class="panda">🐼🎯</div><div class="label">A LITTLE FRIENDSHIP CHALLENGE</div><h1>How well do you remember?</h1>
+<p class="desc">A fun little quiz about our college memories. Let's see how many you get!</p>
+<div class="paper" id="quiz-box">
+<div id="quiz-progress" style="font-weight:bold;color:#c45c91">Question 1 of 5</div>
+<h2 id="quiz-question">Which date was our model-making competition?</h2>
+<div id="quiz-options"></div>
+<div class="quiz-feedback" id="quiz-feedback"></div>
+<button class="btn purple" id="quiz-next" disabled>Next question →</button>
+</div>
+<div class="paper" id="quiz-result" style="display:none"><h2>Your result! 🏆</h2><div style="font-size:55px" id="quiz-score"></div><p id="quiz-result-text"></p><button class="btn" id="quiz-restart">Play again ↻</button></div>
+<button class="btn blue" data-go="vaultHome">← Memory Vault</button>
+</main></section>
+
+<section class="screen timeline-screen" id="jar"><main class="content">
+<div class="panda">🐼🫙</div><div class="label">PICK A LITTLE NOTE</div><h1>The Memory Jar</h1>
+<p class="desc">Tap the jar to pull out a random note. Each one is a tiny reminder of our friendship.</p>
+<div class="jar" id="jar-button" role="button" tabindex="0" aria-label="Open a memory note">🫙</div>
+<div class="note" id="jar-note">Your first little note is waiting inside... 💌</div>
+<button class="btn pink" id="another-note">Another memory ♡</button>
+<button class="btn blue" data-go="vaultHome">← Memory Vault</button>
+</main></section>
+
+<section class="screen letter-screen" id="letter"><main class="content">
+<div class="label">A NOTE FROM ME TO YOU</div><h1>Dear Sakshi, ♡</h1>
+<article class="paper letter">
+<div style="text-align:center;font-size:52px">🐼 🌸 🎀</div>
+<p><b>Sakshi, my Rafiqi — where do I even begin? 😂💗</b> From the early college days to all the random conversations, silly jokes, practicals, canteen talks, and little moments in between, you've become one of those people who make ordinary days feel special. You're not just a friend in my college memories; you're a part of so many of them.</p>
+<p>From college days and practicals to canteen talks, silly jokes, random songs, and all the little moments in between — we've collected so many memories without even planning to.</p>
+<p>I hope you never lose that mix of sweetness, craziness, and the ability to make an ordinary day memorable. Keep laughing loudly, keep being yourself, and keep chasing the things that make you happy.</p>
+<p>Thank you for being my friend and for being an important part of my college life. I genuinely wish you a year filled with peace, confidence, good health, success, and people who value you.</p>
+<p>And please stay the same lovable panda — just a little wiser, maybe. 😂🐼</p>
+<p class="signature">Happy Birthday, Sakshi! 💗<br>Your friend ♡</p>
+</article>
+<button class="btn" data-go="gift">Open your mystery gift → 🎁</button><button class="btn blue" data-go="vaultHome">← Memory Vault</button>
+</main></section>
+
+<section class="screen final-screen" id="gift"><main class="content">
+<div class="panda">🐼🎀</div><div class="label">A LITTLE SOMETHING FOR YOU</div><h1>Your Mystery Gift</h1>
+<p class="desc">There is something waiting inside. Tap the gift to unwrap it!</p>
+<div class="gift" id="gift-button" role="button" tabindex="0" aria-label="Open mystery gift">🎁</div>
+<div class="paper gift-message" id="gift-message"><h2>You are the gift, Rafiqi! 💗</h2><p>Not every gift comes wrapped in a box. Some arrive as friendships, laughter, trust and memories that stay with us.</p><p>Thank you for being part of my story. Here's to many more chapters, more random conversations and more reasons to laugh.</p><div class="panda">🐼💝🐼</div><b>Happy Birthday, Sakshi!</b></div>
+<button class="btn blue" data-go="final">Go to final surprise →</button>
+</main></section>
+
+<section class="screen final-screen" id="final"><main class="content">
+<div class="panda">🐼💗🐼</div><div class="label">THE END... OR THE START OF MORE MEMORIES</div><h1>Happy Birthday, Sakshi!</h1>
+<div class="paper"><h2>Keep this little wonderland close.</h2><p>More laughter, more pictures, more random stories, and many more memories still waiting to happen.</p><div style="font-size:34px">🎂 🌷 🧁 🐾 💝</div></div>
+<button class="btn pink" id="surprise-button">Here's something for you 🎁</button>
+<div class="shower" id="final-message"><div style="font-size:35px">🎈 💗 🎈 🐼 🎈 💗 🎈</div><div class="shower-panda">🐼</div><div class="label">SURPRISE, SAKSHI!</div><h2>A Little Shower of Happiness 💗</h2><div style="font-size:30px">🌸 ✨ 🎀 ✨ 🌸</div><div class="shower-note"><p><b>To my favourite Rafiqi,</b></p><p>May your life always be filled with reasons to smile, people who genuinely care, beautiful surprises, and memories that make you laugh even years later.</p><p>You deserve all the happiness in the world. Keep shining, keep laughing and never change your wonderfully crazy self! 😂💗</p><h3>Happy Birthday, Sakshi! 🎂</h3></div><div style="font-size:36px;margin:18px">🎁 💝 🎁 💗 🎁</div><b>Made with lots of friendship & panda love 🐼</b></div>
+<button class="btn blue" data-go="home">Visit again ↺</button>
+</main></section>
+
+<footer>Made with friendship, memories & lots of panda energy 🐼</footer>
+
+<button class="companion" id="panda-companion" aria-label="Talk to panda">🐼</button>
+<div class="bubble" id="panda-bubble">Psst! Tap me whenever you need a little panda magic. 💗</div>
+
+<script>
+(function(){
+"use strict";
+const PASSWORD="Sakshi@2219";
+const $=id=>document.getElementById(id);
+const screens=[...document.querySelectorAll(".screen")];
+
+function openScreen(id){
+  screens.forEach(s=>s.classList.toggle("active",s.id===id));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-go]");
+  if(b){e.preventDefault();openScreen(b.dataset.go);}
+});
+
+function celebrate(n=80){
+  const decorations=["💗","💕","💖","🌸","🌷","🌼","✨","⭐","💫","🩷","🌺","🤍"];
+  for(let i=0;i<n;i++){
+    const bit=document.createElement("span");
+    bit.className="shower-bit";
+    bit.textContent=decorations[Math.floor(Math.random()*decorations.length)];
+    bit.style.left=Math.random()*100+"vw";
+    bit.style.fontSize=(16+Math.random()*22)+"px";
+    bit.style.setProperty("--duration",(3.2+Math.random()*2.8)+"s");
+    bit.style.setProperty("--delay",(Math.random()*.9)+"s");
+    bit.style.setProperty("--drift",(-65+Math.random()*130)+"px");
+    bit.style.setProperty("--drift-end",(-90+Math.random()*180)+"px");
+    document.body.appendChild(bit);
+    setTimeout(()=>bit.remove(),7000);
+  }
+}
+
+/* password */
+function unlock(e){
+  if(e)e.preventDefault();
+  const entered=$("password").value.trim().toLowerCase();
+  if(entered===PASSWORD.toLowerCase()){
+    $("password-error").textContent="";
+    $("password").value="";
+    openScreen("vaultHome");celebrate(100);
+  }else{
+    $("password-error").textContent="That password isn't right. Try again! 🐼";
+    $("password").value="";$("password").focus();
+  }
+}
+$("password-form").addEventListener("submit",unlock);
+
+/* timeline: open one or several chapters */
+document.addEventListener("click",e=>{
+  const card=e.target.closest(".memory");
+  if(!card)return;
+  card.classList.toggle("open");
+  const hint=card.querySelector(".hint");
+  if(hint)hint.textContent=card.classList.contains("open")?"Tap to close ↑":"Tap to open ↓";
+});
+
+/* cake candles */
+const candles=[...document.querySelectorAll(".candle")];
+function updateCandles(){
+  const left=candles.filter(c=>!c.classList.contains("out")).length;
+  $("candle-count").textContent=left?left+" candle"+(left===1?" is":"s are")+" glowing!":"All candles are out! Make a wish! 💗";
+  if(left===0){$("wish").classList.add("show");celebrate(110);}
+  else $("wish").classList.remove("show");
+}
+candles.forEach(c=>c.addEventListener("click",()=>{c.classList.add("out");updateCandles();}));
+$("relight").addEventListener("click",()=>{candles.forEach(c=>c.classList.remove("out"));updateCandles();});
+
+/* gallery lightbox */
+document.querySelectorAll(".zoomable").forEach(img=>img.addEventListener("click",()=>{
+  $("lightbox-img").src=img.src;$("lightbox").style.display="flex";
+}));
+function closeLightbox(){$("lightbox").style.display="none";$("lightbox-img").src="";}
+$("close-lightbox").addEventListener("click",closeLightbox);
+$("lightbox").addEventListener("click",e=>{if(e.target===$("lightbox"))closeLightbox();});
+
+/* friendship quiz */
+const questions=[
+ {q:"Which date was our model-making competition?",a:["8 October 2023","8 December 2023","18 October 2022"],correct:0,why:"8 October 2023 — the drawing, setup and teamwork day! 🎨"},
+ {q:"Which practical involved the finger-prick moment?",a:["Chemistry practical","HAP practical","Pharmacognosy practical"],correct:1,why:"The HAP practical — and the famous 'look at me' reassurance. 🩹"},
+ {q:"Where were we during the first-semester viva memory?",a:["Canteen","Common room","Library"],correct:1,why:"The common room, during the first-semester practicals and viva. 🤝"},
+ {q:"What kind of stories always made conversations interesting?",a:["Weather reports","Weird dream stories","Cricket commentary"],correct:1,why:"Your wonderfully weird dream stories, obviously! 🌙"},
+ {q:"What makes ordinary college days memorable?",a:["Only exams","Only lectures","The people and little moments"],correct:2,why:"Exactly. The people, jokes, lunch breaks and little moments. 💗"}
+];
+let qi=0,score=0,answered=false;
+function renderQuiz(){
+  $("quiz-result").style.display="none";$("quiz-box").style.display="block";
+  const q=questions[qi];$("quiz-progress").textContent="Question "+(qi+1)+" of "+questions.length;
+  $("quiz-question").textContent=q.q;$("quiz-options").innerHTML="";
+  $("quiz-feedback").textContent="";$("quiz-next").disabled=true;$("quiz-next").textContent=qi===questions.length-1?"See my score →":"Next question →";answered=false;
+  q.a.forEach((answer,i)=>{
+    const b=document.createElement("button");b.className="quiz-option";b.textContent=answer;
+    b.addEventListener("click",()=>{
+      if(answered)return;answered=true;
+      [...$("quiz-options").children].forEach(x=>x.disabled=true);
+      if(i===q.correct){score++;b.classList.add("selected");$("quiz-feedback").textContent="Correct! "+q.why;}
+      else{$("quiz-feedback").textContent="Not quite! "+q.why;$("quiz-options").children[q.correct].classList.add("selected");}
+      $("quiz-next").disabled=false;
+    });
+    $("quiz-options").appendChild(b);
+  });
+}
+$("quiz-next").addEventListener("click",()=>{
+  if(!answered)return;
+  qi++;
+  if(qi<questions.length)renderQuiz();
+  else{
+    $("quiz-box").style.display="none";$("quiz-result").style.display="block";
+    $("quiz-score").textContent=score+" / "+questions.length+" 💗";
+    $("quiz-result-text").textContent=score===5?"Perfect! You remember our little story so well! 🥹":score>=3?"Pretty good! Those memories are still alive. 💗":"Looks like we need another college-memory catch-up! 😂";
+    celebrate(45);
+  }
+});
+$("quiz-restart").addEventListener("click",()=>{qi=0;score=0;renderQuiz();});
+renderQuiz();
+
+/* memory jar */
+const notes=[
+"8 October 2023 — the model-making day, the drawing and the teamwork. 🎨",
+"The HAP practical: 'Don't worry, just look at me.' 🩹",
+"The common room, first-semester viva and a little reassurance. 🤝",
+"The canteen, lunch breaks and conversations that never needed a topic. 🍟",
+"Random songs, random jokes and your wonderfully weird stories. 🎶",
+"Some of the best memories were made on completely ordinary days. 🌷",
+"Thank you for being part of my college story, Rafiqi. 💗",
+"Some moments are small when they happen, but huge when we remember them. 🥹"
+];
+let lastNote=-1;
+function pullNote(){
+  let i;do{i=Math.floor(Math.random()*notes.length);}while(i===lastNote&&notes.length>1);
+  lastNote=i;$("jar-note").textContent=notes[i];celebrate(18);
+}
+$("jar-button").addEventListener("click",pullNote);
+$("jar-button").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pullNote();}});
+$("another-note").addEventListener("click",pullNote);
+
+/* mystery gift */
+function openGift(){
+  $("gift-button").textContent="🎉";
+  $("gift-button").classList.add("open");
+  $("gift-message").classList.add("show");
+  celebrate(100);
+}
+$("gift-button").addEventListener("click",openGift);
+$("gift-button").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openGift();}});
+
+/* final reveal */
+$("surprise-button").addEventListener("click",()=>{
+  $("final-message").classList.add("show");celebrate(220);
+  setTimeout(()=>$("final-message").scrollIntoView({behavior:"smooth",block:"center"}),200);
+});
+
+/* panda companion */
+const pandaLines=[
+"Hey Sakshi! Don't forget to smile today. 🐼💗",
+"One memory at a time. Take your time exploring! 🌸",
+"Rafiqi, the best memories are often the little ones. 🥹",
+"Have you opened the Memory Jar yet? There's a note waiting! 💌",
+"Challenge time! Try the friendship quiz. 🎯",
+"Sending you a tiny panda hug. 🐼"
+];
+let pandaIndex=0;
+$("panda-companion").addEventListener("click",()=>{
+  $("panda-bubble").textContent=pandaLines[pandaIndex%pandaLines.length];
+  $("panda-bubble").classList.toggle("show");
+  pandaIndex++;
+});
+updateCandles();
+})();
+</script>
+</body>
+</html>
